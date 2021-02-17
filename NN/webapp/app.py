@@ -42,5 +42,10 @@ def canvas():
         print(pred)
         return jsonify({'result':pred})
     return render_template('canvas.html', msg = 'get')
+
+@app.route('/signup')
+def signup():
+    return 'signup'
+
 if __name__ == '__main__':
     app.run()
