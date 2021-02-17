@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Drawing App</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='draw.js') }}"></script>
+	</head>
+    <header>
+     Drawing App
+    </header>
+
+<body>
+        <div>
+				<div>
+        <canvas id="canvas", name ="draw" width="140" height="140" style="border:1px solid #000000;">
+        <script type="text/javascript">
+            $(document).ready(function() {
+                drawCanvas();
+            });
+        </script>
+        </canvas>
+				</div>
+        <div>
+          <div id=result>{{msg}}</div>
+        </div>
+        </div>
+				<div>
+						<button id="send">Save</button>
+				</div>
+        <div>
+          <button type="button" onclick='erase()'>erase</button>
+        </div>
+</body>
+</html>
