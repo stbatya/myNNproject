@@ -1,0 +1,17 @@
+from load import load_mnist
+import pandas as pd
+import numpy as np
+import keras
+import tensorflow
+from sklearn.model_selection import train_test_split
+
+
+import matplotlib.pyplot as plt
+
+from keras.models import Model, Sequential
+from keras.layers import *
+from keras.preprocessing.image import array_to_img, img_to_array
+from keras.preprocessing.image import ImageDataGenerator
+from keras.utils import to_categorical
+
+model = load_model('cnn_model')
