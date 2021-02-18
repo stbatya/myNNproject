@@ -16,7 +16,7 @@ model = keras.models.load_model('cnn_model')
 
 @app.route('/')
 def index():
-    return render_template('first_app.html', name='K')
+    return render_template('index.html', name='K')
 
 @app.route('/canvas', methods = ['GET','POST'])
 def canvas():
@@ -43,7 +43,7 @@ def canvas():
         return jsonify({'result':pred})
     return render_template('canvas.html', msg = 'get')
 
-#here will be a link to a authorisation blueprint
+#here will be a link to an authorisation blueprint
 
 if __name__ == '__main__':
     app.run()
