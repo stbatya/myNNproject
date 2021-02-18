@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Первое приложение</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+    <title>My first flask app</title>
   </head>
   <body>
-    <div>
-      Меня зовут {{name}}
+    <section class='hero is-primary is-fullheight'>
+      <div class="hero-head">
+        <nav class="navbar">
+          <div class="container">
+            <div id="navbarMenuHeroA" class="navbar-menu">
+              <div class="navbar-end">
+                  <a href="{{ url_for('main.index') }}" class="navbar-item">
+                      Home
+                  </a>
+                  <a href="{{ url_for('main.profile') }}" class="navbar-item">
+                      Profile
+                  </a>
+                  <a href="{{ url_for('auth.login') }}" class="navbar-item">
+                      Login
+                  </a>
+                  <a href="{{ url_for('auth.signup') }}" class="navbar-item">
+                      Sign Up
+                  </a>
+                  <a href="{{ url_for('auth.logout') }}" class="navbar-item">
+                      Logout
+                  </a>
+              </div>
+            </div>
+        </div>
+      </nav>
     </div>
-    <div>
-     <a href="{{ url_for('canvas') }}"> нарисовать </a>
+    <div class='hero-body'>
+      <div class="container has-text-centered">
+        <a href="{{ url_for('canvas') }}"> нарисовать </a>
+      </div>
     </div>
+  </section>
   </body>
 </html>

@@ -43,9 +43,7 @@ def canvas():
         return jsonify({'result':pred})
     return render_template('canvas.html', msg = 'get')
 
-@app.route('/signup')
-def signup():
-    return 'signup'
+#here will be a link to a authorisation blueprint
 
 if __name__ == '__main__':
     app.run()
