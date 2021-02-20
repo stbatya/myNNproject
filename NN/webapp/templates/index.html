@@ -1,11 +1,16 @@
 {%extends 'first_app.html'%}
 
 {% block content%}
-<h1 class="title">
+<div class="columns">
+<div class="column text-center">
+<h1 class="text-center" style="margin-top: 5%;">
   Hello!My name is {{name}}
 </h1>
-<h2 class="subtitle">
+<h2 class="text-center">
   This is my digit recognition webapp!
 </h2>
+
 <a href="{{url_for('canvas')}}">Draw a number</a>
+</div>
+</div>
 {%endblock%}

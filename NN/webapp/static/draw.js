@@ -14,17 +14,19 @@ function drawCanvas(){
     context = document.getElementById('canvas').getContext("2d");
 
     $('#canvas').mousedown(function (e) {
-        var mouseX = e.pageX - this.offsetLeft;
-        var mouseY = e.pageY - this.offsetTop;
+        var rect = this.getBoundingClientRect();
+        var mouseX = e.pageX - rect.left;
+        var mouseY = e.pageY - rect.top;
 
         paint = true;
-        addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+        addClick(e.pageX - rect.left, e.pageY - rect.top);
         redraw();
     });
 
     $('#canvas').mousemove(function (e) {
+      var rect = this.getBoundingClientRect();
         if (paint) {
-            addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+            addClick(e.pageX - rect.left, e.pageY - rect.top, true);
             redraw();
         }
     });
@@ -70,6 +72,7 @@ function erase(){
   clickX=[];
   clickY=[];
   clickDrag=[];
+  document.getElementById("answer").hidden = true;
 }
 
 $("document").ready(function(){
@@ -83,7 +86,8 @@ $("document").ready(function(){
           contentType: "application/json",
           data: JSON.stringify({"data": image.src})
         }).done(function(data) {
-            alert("Your result is"+data.result);
+            document.getElementById("answer").hidden = false;
+            document.getElementById("answer").innerHTML = "Your digit is "+data.result;
           });
                 });
 });
