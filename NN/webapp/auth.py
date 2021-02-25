@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
 from webapp import db
 from flask import flash
-from flask_login import login_user
+from flask_login import login_user, logout_user, login_required
 #from . import db
 
 auth = Blueprint('auth', __name__)
@@ -28,7 +28,7 @@ def login_post():
 
 @auth.route('/signup')
 def signup():
-    return render_template('signup.html',flag=0)
+    return render_template('signup.html')
 
 @auth.route('/signup',methods=['POST'])
 def signup_post():
@@ -42,12 +42,14 @@ def signup_post():
     if user:
         print('exist!')
         flash('email already exists')
-        return redirect(url_for('auth.signup',flag=1))
+        return redirect(url_for('auth.signup'))
     new_user = User(email=email, name=name, password=generate_password_hash(password,method='sha256'))
     db.session.add(new_user)
     db.session.commit()
     return redirect(url_for('auth.login'))#after signup we redirect user to login page
 
 @auth.route('/logout')
+@login_required
 def logout():
-    return 'Logout'
+    logout_user()
+    return redirect(url_for('main.index'))

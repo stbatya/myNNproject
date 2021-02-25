@@ -15,9 +15,14 @@
       </div>
       <div class="navbar-section">
         <a href="{{ url_for('main.index') }}" class="btn btn-link">Home</a>
+        {%if not current_user.is_authenticated%}
         <a href="{{ url_for('auth.login') }}" class="btn btn-link">Login</a>
-        <a href="{{ url_for('auth.signup',flag=0) }}" class="btn btn-link">Sign Up</a>
+        <a href="{{ url_for('auth.signup') }}" class="btn btn-link">Sign Up</a>
+        {%endif%}
+        {%if current_user.is_authenticated%}
         <a href="{{ url_for('main.profile') }}" class="btn btn-link">Profile</a>
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-link">Logout</a>
+        {%endif%}
       </div>
     </header>
 <div class="container centered">
