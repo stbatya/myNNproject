@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask import Flask
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, Response
 import base64
 import numpy as np
 import cv2
@@ -10,6 +10,7 @@ from flask_login import login_required, current_user
 from .models import User, Result
 from webapp import db
 from sqlalchemy import select
+from .video import VideoCap
 
 main = Blueprint('main', __name__)
 
@@ -70,3 +71,21 @@ def canvas():
         #print(pred)
         return jsonify({'result':pred})
     return render_template('canvas.html', msg = 'get')
+
+def gen(camera):
+    while True:
+        try:
+            goes, frame = camera.frame()
+            yield (b'--frame\r\n'
+                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+        except KeyError:
+            return
+
+@main.route('/video_feed')
+def video_feed():
+    return Response(gen(VideoCap()),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@main.route('/face')
+def face():
+    return render_template('face.html')
