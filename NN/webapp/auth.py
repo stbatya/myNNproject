@@ -6,7 +6,7 @@ from flask import flash
 from flask_login import login_user, logout_user, login_required
 #from . import db
 from .models import User
-"""Module contains functions that define routes concerning authorisation process"""
+"""Module contains functions that define routes related to authorisation process"""
 
 #setting a flask blueprint
 auth = Blueprint('auth', __name__)

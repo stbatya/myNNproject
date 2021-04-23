@@ -13,12 +13,10 @@
 				<div class="container">
           <h1 class="text-center" style="margin-top: 5%;">Digit recognition</h1>
 	        <p class="text-center text-large explanation">Draw a digit in a canvas below and press Save</p>
-        <div class="columns">
-        <div class="column col-4">
-        </div>
-        <div class="column col-4 text-center">
+        <div class="row">
+        <div class="col-md-2 mx-auto">
           <div class="card">
-            <div class="crad-image">
+            <div class="card-image mx-auto">
             <canvas id="canvas", name ="draw" width="140" height="140" style="border:1px solid #000000;">
               <script type="text/javascript">
                 $(document).ready(function() {
@@ -27,7 +25,7 @@
                 </script>
               </canvas>
             </div>
-            <div class="card-footer">
+            <div class="card-footer d-flex justify-content-around">
               <button id="send" class='btn'>Save</button>
               <button type="button" onclick='erase()' class='btn'>Erase</button>
             </div>
@@ -43,8 +41,6 @@
         </div>
         </div>
         -->
-        </div>
-        <div class="column col-4">
         </div>
         </div>
         </div>
