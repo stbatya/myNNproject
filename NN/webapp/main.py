@@ -12,80 +12,100 @@ from webapp import db
 from sqlalchemy import select
 from .video import VideoCap
 
+"""Module that contatins blueprints for basic pages"""
+
+#Set a flask blueprint.
 main = Blueprint('main', __name__)
 
 
 #with open(f'model_nn.pkl', 'rb') as f:
         #model = pickle.load(f)
+#Load keras cnn for
 model = keras.models.load_model('webapp/cnn_model')
 
+#Route for main page.
 @main.route('/')
 def index():
     return render_template('index.html', name='K')
-
+#Route for profile page
 @main.route('/profile')
 @login_required
 def profile():
+    #Query to get logged user's data
     table = db.session.query(Result).filter_by(person_id=current_user.get_id()).all()
     imglist = []
+    #Loop through rows
     for item in table:
+        #Load picture from 'picture' column (since it was packed there using pickle).
+        #At this moment the picture is numpy array
         img = pickle.loads(item.picture)
+        #Reshape the picture.
         img = img.reshape(28,28)
-        #print(img.shape)
+        #Encode numpy array as jpeg picture.
         retval, img = cv2.imencode('.jpg', img)
-        #cv2.imshow('img', img)
+        #Encode picture to base64.
+        #On frontend side it will be dealt with as base64 image in <img> html tag.
         item.picture = str(base64.b64encode(img),'utf-8').strip()
-        print(item.picture)
-        #imglist.append(base64.b64encode(img[0][:][:][0]))
-    #print(result)
     return render_template('profile.html', name = current_user.name, table=table)
-
+#Route for page with canvas for painting
 @main.route('/canvas', methods = ['GET','POST'])
 def canvas():
     if request.method == 'POST':
-        #print('accepted')
-        #print(request.json['data'])
+        #Get the json request. The picture in base64 is the part of string after comma.
         draw = request.json['data'].split(',')[1]
-        #print(draw)
-        #print('code_ended')
-        #print('base64is!',draw)
+        #Decode base64.
         draw_decoded = base64.b64decode(draw)
-        #print('decodedis!',draw_decoded)
+        #Get picture as numpy array.
         image = np.asarray(bytearray(draw_decoded), dtype="uint8")
+        #Code it as a grayscale.
         image = cv2.imdecode(image, cv2.IMREAD_GRAYSCALE)
-        #Resizing and reshaping to keep the ratio.
+        #Resize and reshape to 28x28.
         resized = cv2.resize(image, (28,28), interpolation = cv2.INTER_AREA)
+        #Back to numpy.
         x_vector = np.asarray(resized, dtype="uint8")
+        #Reshape to 28*28=784 dimensional vector.
         x_vector = x_vector.reshape(1,784)
+        #Scale vector coordinates to [0;1] interval
         for i in range(784):
             x_vector[0][i]=255*x_vector[0][i]/(x_vector[0][i]+1)
-        #print(x_vector.reshape(28,28))
+        #Add dimensions as in neural network input
         x_vector = x_vector.reshape(1,28,28,1)
+        #Make a prediction with model
         y_pred = model.predict(x_vector)
+        #Get an integer mark of predicted class
         pred = int(np.argmax(y_pred))
+        #If user is authenticated dump the image with pickle
+        #and add image and prediction to the Result table
         if current_user.is_authenticated:
             pict = pickle.dumps(x_vector)
             new_digit = Result(picture = pict, prediction = pred, person_id = current_user.get_id())
             db.session.add(new_digit)
             db.session.commit()
-        #print(pred)
+        #return prediction
         return jsonify({'result':pred})
     return render_template('canvas.html', msg = 'get')
 
+#Camera generator
 def gen(camera):
     while True:
+        #Try to get a nex frame of viedostream and yield it
         try:
             goes, frame = camera.frame()
             yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+        #If out of frames then return
         except KeyError:
             return
 
+#Route for video feed
 @main.route('/video_feed')
 def video_feed():
+    #Return a response with result of Camera generator applied to VideoCap.
+    #Specifies mimetype also.
     return Response(gen(VideoCap()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+#Route for face
 @main.route('/face')
 def face():
     return render_template('face.html')

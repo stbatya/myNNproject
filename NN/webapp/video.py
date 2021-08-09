@@ -1,8 +1,12 @@
 import cv2
 import numpy as np
 import keras
+"""Model containing class VideoCapwith method frame that gets frame and applies face detection and then emotion recognition. It returns modified frame(with recognition results added)."""
 
+
+#Load Keras neural network for face recognition.
 model = keras.models.load_model('webapp/cnn_face_recognition')
+#List of emotions.
 EMOTIONS_LIST = ["Angry", "Disgust",
                      "Fear", "Happy",
                      "Neutral", "Sad",
@@ -14,7 +18,10 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 
 class VideoCap(object):
     def __init__(self):
-        self.video = cv2.VideoCapture(0,cv2.CAP_DSHOW)
+        #if cv2.VideoCapture(0).isOpened():
+            #self.video = cv2.VideoCapture(0,cv2.CAP_DSHOW)
+        #else:
+        self.video = cv2.VideoCapture('webapp/static/video1.avi')
 
     def __del__(self):
         self.video.release()
