@@ -1,10 +1,8 @@
-from flask import Blueprint
+from flask import Blueprint, flash
 from flask import render_template, request, jsonify, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from webapp import db
-from flask import flash
 from flask_login import login_user, logout_user, login_required
-#from . import db
 from .models import User
 """Module contains functions that define routes related to authorisation process"""
 
