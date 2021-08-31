@@ -18,7 +18,7 @@ facec = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_d
 #set font
 font = cv2.FONT_HERSHEY_SIMPLEX
 
-#class with video as objects and frame method that yields next frame or raises key error at the end of the video
+#class with video as objects and 'frame' method that yields next frame or raises key error at the end of the video
 class VideoCap(object):
     def __init__(self):
         #if cv2.VideoCapture(0).isOpened():
