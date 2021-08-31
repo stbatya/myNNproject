@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
-import keras
-"""Model containing class VideoCapwith method frame that gets frame and applies face detection and then emotion recognition. It returns modified frame(with recognition results added)."""
+from tensorflow import keras
+"""module contains class VideoCapwith method frame that gets frame and applies face detection and then emotion recognition. It returns modified frame(with recognition results added)."""
 
 
 #Load Keras neural network for face recognition.
