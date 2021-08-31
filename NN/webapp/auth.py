@@ -12,6 +12,7 @@ auth = Blueprint('auth', __name__)
 @auth.route('/login')
 def login():
     return render_template('login.html')
+
 #Route for login form post.
 @auth.route('/login', methods=['POST'])
 def login_post():
@@ -29,29 +30,27 @@ def login_post():
     #If user with accepted email and passowrd is right than log user in.
     login_user(user, remember=remember)
     return redirect(url_for('main.profile'))
-#Route for signup page rendering.
+
+#Route for signup page get.
 @auth.route('/signup')
 def signup():
     return render_template('signup.html')
+
 #Route for signup form post.
 @auth.route('/signup',methods=['POST'])
 def signup_post():
+    #Form fields is written into respective variables.
     email = request.form.get('email')
-    #print(email)
     name = request.form.get('name')
     password = request.form.get('password')
-
     user = User.query.filter_by(email=email).first()
-    #Check if user exists.
+    #Check if user exists. If so, return a message using flash.
     if user:
-        #I used this print for testing.
-        #print('exist!')
         flash('email already exists')
         return redirect(url_for('auth.signup'))
     #Insert a row into User table in db with recieved parameters
     new_user = User(email=email, name=name, password=generate_password_hash(password,method='sha256'))
     db.session.add(new_user)
-    #Make a commit.
     db.session.commit()
     #Redirect to login page.
     return redirect(url_for('auth.login'))#after signup we redirect user to login page

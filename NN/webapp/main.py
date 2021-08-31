@@ -12,31 +12,29 @@ from webapp import db
 from sqlalchemy import select
 from .video import VideoCap
 
-"""Module that contatins blueprints for basic pages"""
+"""Module that contains blueprints for basic pages"""
 
 #Set a flask blueprint.
 main = Blueprint('main', __name__)
 
-
-#with open(f'model_nn.pkl', 'rb') as f:
-        #model = pickle.load(f)
-#Load keras cnn for
+#Load keras model for digit recognition
 model = keras.models.load_model('webapp/cnn_model')
 
 #Route for main page.
 @main.route('/')
 def index():
     return render_template('index.html', name='K')
+
 #Route for profile page
 @main.route('/profile')
-@login_required
+@login_required #it requires user to be logged in
 def profile():
     #Query to get logged user's data
     table = db.session.query(Result).filter_by(person_id=current_user.get_id()).all()
     imglist = []
-    #Loop through rows
+    #Loop through query rows
     for item in table:
-        #Load picture from 'picture' column (since it was packed there using pickle).
+        #Load picture from 'picture' column (since it was packed in there using pickle).
         #At this moment the picture is numpy array
         img = pickle.loads(item.picture)
         #Reshape the picture.
@@ -47,6 +45,7 @@ def profile():
         #On frontend side it will be dealt with as base64 image in <img> html tag.
         item.picture = str(base64.b64encode(img),'utf-8').strip()
     return render_template('profile.html', name = current_user.name, table=table)
+
 #Route for page with canvas for painting
 @main.route('/canvas', methods = ['GET','POST'])
 def canvas():
@@ -88,7 +87,7 @@ def canvas():
 #Camera generator
 def gen(camera):
     while True:
-        #Try to get a nex frame of viedostream and yield it
+        #Try to get a next frame of videostream and yield it
         try:
             goes, frame = camera.frame()
             yield (b'--frame\r\n'
@@ -105,7 +104,7 @@ def video_feed():
     return Response(gen(VideoCap()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-#Route for face
+#Route for page with facial emotions recognition
 @main.route('/face')
 def face():
     return render_template('face.html')
