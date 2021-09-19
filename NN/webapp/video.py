@@ -21,8 +21,7 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 #class with video as objects and 'frame' method that yields next frame or raises key error at the end of the video
 class VideoCap(object):
     def __init__(self):
-        if cv2.VideoCapture(0).isOpened():
-            self.video = cv2.VideoCapture(0,cv2.CAP_DSHOW)
+        self.video = cv2.VideoCapture("webapp/static/video1.mp4")
         #else:
         #create VideoCapture object
         #self.video = cv2.VideoCapture(0)

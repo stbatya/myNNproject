@@ -23,7 +23,7 @@ model = keras.models.load_model('webapp/cnn_model')
 #Route for main page.
 @main.route('/')
 def index():
-    return render_template('index.html', name='K')
+    return render_template('index.html')
 
 #Route for profile page
 @main.route('/profile')

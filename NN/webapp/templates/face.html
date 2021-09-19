@@ -2,6 +2,10 @@
 
 {%block content%}
 <div class="mx-auto text-center">
+<h2>This is facial expression recognition part of my webapp</h2>
+<p>I used <a href="https://www.kaggle.com/nicolejyt/facialexpressionrecognition">this</a> dataset from Kaggle to train neural network. There are seven categories: Angry, Disgust, Fear, Happy, Sad, Surprise, Neutral.</p>
+<p>The video is served from server frame by frame. Each frame is feeded to the network. The rectangle with recognised face and facial emotion is then added to the frame, and frame is uploaded to the page.</p>
+<p>I used <a href="https://www.youtube.com/watch?v=y2YUMPJATmg">this video</a> and uploaded it to my server. The recognition is made in real time on the server side right now as video is being served frame by frame.</p>
 <img class="mx-auto" id="bg" width=800px height=640px src="{{ url_for('main.video_feed') }}">
 </div>
 {%endblock%}
