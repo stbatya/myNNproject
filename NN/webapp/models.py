@@ -1,7 +1,9 @@
+"""module contains ORM classes definitions for User and Result tables"""
+
+
 from . import db
 from flask_login import UserMixin
 
-"""module contains ORM classes definitions for User and Result tables"""
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -9,6 +11,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
     digits = db.relationship('Result', backref='user', lazy=True)
+
 
 class Result(db.Model):
     id = db.Column(db.Integer, primary_key=True)

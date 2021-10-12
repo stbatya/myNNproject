@@ -207,6 +207,7 @@ class NeuralNetMLP(object):
         grad2 : array, shape = [n_output_units, n_hidden_units]
             Gradient of the weight matrix w2.
         """
+        
         # backpropagation
         sigma3 = a3 - y_enc
         z2 = self._add_bias_unit(z2, how='row')

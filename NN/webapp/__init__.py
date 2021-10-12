@@ -1,36 +1,43 @@
+"""app initialisation module"""
+
+
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
-"""app initialisation module"""
 
-#create sqlaclhemy object
+#Create sqlaclhemy object.
 db = SQLAlchemy()
 
-#app factory
 def create_app():
-    #create app
+    """App factory"""
+
+    #Create app.
     app = Flask(__name__)
-    #configure app
+
+    #Configure app.
     app.config['SECRET_KEY'] = 'Kirill'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-    #configure login manager
+
+    #Configure login manager.
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
     from .models import User
 
-    #route for user loader.
     @login_manager.user_loader
     def load_user(user_id):
-        # since the user_id is just the primary key of our user table, use it in the query for the user
+        """Route for user loader"""
+        
+        #Since the user_id is just the primary key of our user table,
+        #use it in the query for the user.
         return User.query.get(int(user_id))
 
-    #register app to db
+    #Register app to db.
     db.init_app(app)
 
-    #load blueprints
+    #Load blueprints.
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
 
